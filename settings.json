@@ -1,0 +1,4 @@
+{
+    "file.csv": "data/diabetes.csv",
+    "results.path": "data/results"
+}
