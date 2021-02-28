@@ -1,0 +1,7 @@
+# Vim
+.vim/
+.*.swp
+
+# Python
+*__pycache__/
+venv/
