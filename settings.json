@@ -1,4 +1,6 @@
 {
     "file.csv": "data/diabetes.csv",
-    "results.path": "data/results"
+    "results.path": "data/results",
+    "cleanfile.arff": "data/diabetes.arff",
+    "cleanfile.arff.relation": "diabetes"
 }

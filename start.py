@@ -1,6 +1,7 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import numpy as np
+import arff
 
 from classifier import knn, dt, nb
 
@@ -92,8 +93,16 @@ def make_accurracy_table(table, save=None, transpose=False):
     if save:
         tabdf.to_csv(save)
 
+def export_to_arff(df, path, relation):
+    df['class'] = df['class'].transform(bool)
+    arff.dump(path, df.values, relation = relation, names = df.columns)
+
 def start(df, settings = {}):
     results = settings.get('results.path')
+    arffargs = {
+        'path': settings.get('cleanfile.arff'),
+        'relation': settings.get('cleanfile.arff.relation')
+    }
     print("===============")
     print("OBTENÇÃO")
     print("===============")
@@ -105,6 +114,7 @@ def start(df, settings = {}):
     print("LIMPEZA")
     print("===============")
     df = cleandata(df)
+    export_to_arff(df, **arffargs)
     df.to_csv('cleaned.csv')
     print(df.describe().T)
     print("===============")
