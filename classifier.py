@@ -1,4 +1,5 @@
 import math
+from rna import SVM
 import statistics
 
 from sklearn.naive_bayes import GaussianNB
@@ -83,6 +84,16 @@ def dt(xtrain, ytrain, xtest, ytest):
     classifier = DecisionTreeClassifier()
     classifier.fit(xtrain, ytrain)
     ypred = classifier.predict(xtest)
+    accurracy = metrics.accuracy_score(ytest, ypred)
+    return ClassificationResults(
+        x = xtest,
+        y = ypred,
+        accurracy = accurracy
+    )
+
+def svm(xtrain, ytrain, xtest, ytest):
+    classifier = SVM(xtrain, ytrain)
+    ypred = classifier(xtest)
     accurracy = metrics.accuracy_score(ytest, ypred)
     return ClassificationResults(
         x = xtest,

@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import arff
 
-from classifier import knn, dt, nb
+from classifier import knn, dt, nb, svm
 
 def cleandata(df):
     # Faz uma cópia do Dataframe original
@@ -84,6 +84,27 @@ def test_dt(df):
         }
     return table
 
+def test_svm(df):
+    # Tabela de resultados do experimento
+    table = {}
+    x = df[['preg','plas','pres','skin','insu','mass','pedi','age']]
+    y = df['class'].transform(lambda k: 1 if bool(k) else -1)
+    for t in range(60,91,3):
+        table[t] = []
+        for i in range(1,41):
+            print(f"Executing: treino={t}% iteração={i} ...")
+            xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size=((100-t)/100), random_state=None, stratify=y)
+            results = svm(xtrain, ytrain, xtest, ytest)
+            print(f"Acurácia: {results.accurracy()}")
+            table[t].append(results.accurracy())
+        table[t] = {
+            'min': np.min(table[t]),
+            'mean': np.mean(table[t]),
+            'max': np.max(table[t])
+        }
+    return table
+
+
 def make_accurracy_table(table, save=None, transpose=False):
     tabdf = pd.DataFrame(table)
     if transpose:
@@ -120,16 +141,21 @@ def start(df, settings = {}):
     print("===============")
     print("K-NN")
     print("===============")
-    table = test_knn(df)
-    make_accurracy_table(table, f"{results}/knn_results.csv")
+    # table = test_knn(df)
+    # make_accurracy_table(table, f"{results}/knn_results.csv")
     print("===============")
     print("NAIVE BAYES")
     print("===============")
-    table = test_nb(df)
-    make_accurracy_table(table, f"{results}/nb_results.csv", transpose = True)
+    # table = test_nb(df)
+    # make_accurracy_table(table, f"{results}/nb_results.csv", transpose = True)
     print("===============")
     print("DECISION TREE")
     print("===============")
-    table = test_dt(df)
-    make_accurracy_table(table, f"{results}/dt_results.csv", transpose = True)
+    # table = test_dt(df)
+    # make_accurracy_table(table, f"{results}/dt_results.csv", transpose = True)
+    print("===============")
+    print("SVN")
+    print("===============")
+    table = test_svm(df)
+    make_accurracy_table(table, f"{results}/svm_results.csv", transpose = True)
 
