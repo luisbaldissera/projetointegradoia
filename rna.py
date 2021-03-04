@@ -1,3 +1,7 @@
+# Implementação do SVM: Source Vector Machine
+# 
+# author: Luís Baldissera
+
 import numpy as np
 import numpy.linalg as la
 from scipy.signal import convolve2d
